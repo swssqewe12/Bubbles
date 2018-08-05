@@ -3,6 +3,9 @@ from pyglet.window import key
 
 from RenderSystem import *
 from MovementInputSystem import *
+from TrailGenerator import *
+from PhysicsSystem import *
+
 from ICController import *
 
 # Temporary imports
@@ -13,7 +16,6 @@ from Vector import *
 from Sprite import *
 from MovementControl import *
 from InputControl import *
-from PhysicsSystem import *
 
 class Game(pyglet.window.Window):
 	def __init__(self):
@@ -48,6 +50,7 @@ class Game(pyglet.window.Window):
 	def init_systems(self):
 		self.world.add_processor(RenderSystem(),		groups=[self.pgs["DRAW"]])
 		self.world.add_processor(MovementInputSystem(),	groups=[self.pgs["UPDATE"]])
+		self.world.add_processor(TrailGenerator(),		groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(PhysicsSystem(),		groups=[self.pgs["FIXED_UPDATE"]])
 
 	def init_entities(self):
@@ -60,7 +63,7 @@ class Game(pyglet.window.Window):
 		control = MovementControl()
 		control.add_control(self.xmic, Vector(1, 0))
 		control.add_control(self.ymic, Vector(0, 1))
-		entity = self.world.create_entity(Transform(), Motion(), rend, control)
+		entity = self.world.create_entity(Transform(), Motion(), Trail(), rend, control)
 
 	def run(self):
 		pyglet.clock.schedule_interval(self.on_update, 1/120.0)

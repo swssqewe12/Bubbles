@@ -3,7 +3,7 @@ from Vector import *
 class Camera:
 	def __init__(self, vw):
 		self.vw = vw
-		self.zoom = 1
+		self.zoom = 0.5
 		self.size = Vector(0, 0)
 	
 	def rv(self, vec):

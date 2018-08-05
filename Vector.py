@@ -44,6 +44,9 @@ class Vector:
 	def to_rot(self):
 		return mathutils.normalized_rot(math.atan2(self.y, self.x))
 
+	def copy(self):
+		return Vector(self.x, self.y)
+
 	def __repr__(self):
 		return "Vector(" + str(self.x) + ", " + str(self.y) + ")"
 
