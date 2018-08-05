@@ -7,7 +7,7 @@ class MovementInputSystem(esp.Processor):
 
 	def update(self, dt):
 		for ent, (motion, control) in self.world.get_components(Motion, MovementControl):
-			dir_vec = Vector()
+			'''dir_vec = Vector()
 			for ic, vec in control.ic_list:
 				dir_vec.add(vec.multed_by_scalar(ic.get_amt()))
 			if dir_vec.x == 0 and dir_vec.y == 0:
@@ -23,4 +23,8 @@ class MovementInputSystem(esp.Processor):
 				print(math.degrees(diff), math.degrees(rot_speed))
 				motion.velocity = Vector.from_rot(control.curr_rot + diff).mul_scalar(control.movement_speed)
 				control.curr_rot = motion.velocity.to_rot()
-				control.is_rotated = True
+				control.is_rotated = True'''
+			vel = Vector()
+			for ic, vec in control.ic_list:
+				vel.add(vec.multed_by_scalar(ic.get_amt()))
+			motion.velocity = vel.normalize().mul_scalar(control.movement_speed)

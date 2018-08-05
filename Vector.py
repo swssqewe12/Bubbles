@@ -21,6 +21,16 @@ class Vector:
 	def multed_by_scalar(self, scalar):
 		return Vector(self.x * scalar, self.y * scalar)
 
+	def normalize(self):
+		mag = self.magnitude()
+		if mag == 0: return self
+		self.x /= mag
+		self.y /= mag
+		return self
+
+	def magnitude(self):
+		return math.sqrt(math.pow(self.x, 2) + math.pow(self.y, 2))
+
 	def to_rot(self):
 		return mathutils.normalized_rot(math.atan2(self.y, self.x))
 
