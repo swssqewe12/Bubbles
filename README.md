@@ -1,4 +1,4 @@
 # Bubbles
-Python3
+python3 -m pip install pyglet
 
-pyglet
+esper

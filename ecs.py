@@ -1,6 +1,5 @@
 class Component:
-	def __init__(self, entity):
-		self._entity = entity
+	pass
 
 
 
@@ -38,7 +37,7 @@ class SystemList:
 	def add_system(self, system):
 		self.systems.append(system)
 
-	def update_systems(self, cl, dt):
+	def update_systems(self, cl, *args, **kwargs):
 		for system in self.systems:
 			if len(system._required) == 0:
 				raise type(system).__name__ + " requires atleast one required component!"
@@ -47,10 +46,10 @@ class SystemList:
 				min_index = system._required.index(min_type)
 				for c1 in cl._components[min_type]:
 					cont = False
-					r = []
+					r = [c1]
 					o = []
 					entity = c1._entity
-					for i in range(system._required):
+					for i in range(len(system._required)):
 						if i == min_index: continue
 						ct = system._required[i]
 						ci = entity.get_component_index(ct)
@@ -64,11 +63,11 @@ class SystemList:
 						ci = entity.get_component_index(ct)
 						c2 = cl._components[ct][ci]
 						o.append(c2)
-					system.update_components(dt, r, o)
+					system.update_components(r, o, *args, **kwargs)
 					
 			else:
 				for c in cl._components[system._required[0]]:
-					system.update_components(dt, [c], [])
+					system.update_components([c], [], *args, **kwargs)
 
 
 
@@ -79,9 +78,10 @@ class ComponentList:
 	def register_component_type(self, typ):
 		self._components[typ] = []
 
-	def add_component(self, component):
+	def add_component(self, component, entity):
+		component._entity = entity
 		self._components[component.__class__].append(component)
-		component._entity._components.append((component.__class__, len(self._components[component.__class__]) - 1))
+		entity._components.append((component.__class__, len(self._components[component.__class__]) - 1))
 
 	def remove_component(self, typ, index):
 		if index == len(self.components[typ]) - 1:
