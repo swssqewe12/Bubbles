@@ -14,6 +14,9 @@ class Renderable:
 		self.sprite_list[handle].delete()
 		del self.sprite_list[handle]
 
+	def get_sprite(self, handle):
+		return self.sprite_list[handle]
+
 	def _next_sprite_id(self):
 		Renderable.next_sprite_id += 1
 		return Renderable.next_sprite_id

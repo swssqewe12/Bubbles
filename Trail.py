@@ -2,8 +2,8 @@ class Trail:
 	def __init__(self):
 		self.list = []
 		self.max_trail_count = 8
-		self.next_trail_time = 0.5
-		self.trail_time_interval = 0.5
+		self.next_trail_time = 0.4
+		self.trail_time_interval = 0.4
 
 	def add(self, handle):
 		self.list.insert(0, handle)
