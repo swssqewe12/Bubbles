@@ -5,7 +5,8 @@ class MovementControl:
 		#self.curr_rot = 0
 		#self.target_rot = 0
 		#self.rot_speed = 1
-		self.movement_speed = 50
+		self.accel_speed = 400
+		self.max_speed = 100
 
 	def add_control(self, ic, vec):
 		self.ic_list.append((ic, vec))

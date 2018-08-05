@@ -13,6 +13,11 @@ class Vector:
 	def added_to(self, vec):
 		return Vector(self.x + vec.x, self.y + vec.y)
 
+	def sub(self, vec):
+		self.x -= vec.x
+		self.y -= vec.y
+		return self
+
 	def mul_scalar(self, scalar):
 		self.x *= scalar
 		self.y *= scalar
@@ -20,6 +25,11 @@ class Vector:
 
 	def multed_by_scalar(self, scalar):
 		return Vector(self.x * scalar, self.y * scalar)
+	
+	def div_scalar(self, scalar):
+		self.x /= scalar
+		self.y /= scalar
+		return self
 
 	def normalize(self):
 		mag = self.magnitude()

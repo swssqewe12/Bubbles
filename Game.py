@@ -66,6 +66,7 @@ class Game(pyglet.window.Window):
 		pyglet.clock.schedule_interval(self.on_update, 1/120.0)
 
 	def on_draw(self):
+		pyglet.gl.glClearColor(0.35,0.7,0.7,1)
 		self.clear()
 		self.world.process_group(self.pgs["DRAW"], method_name="draw")
 
