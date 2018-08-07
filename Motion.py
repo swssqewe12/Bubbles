@@ -4,4 +4,4 @@ class Motion:
 	def __init__(self, velocity=Vector(), acceleration=Vector()):
 		self.velocity = velocity
 		self.acceleration = acceleration
-		self.friction = 1.005
+		self.friction = 1.0035

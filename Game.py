@@ -3,8 +3,9 @@ from pyglet.window import key
 
 from RenderSystem import *
 from MovementInputSystem import *
-from TrailGenerator import *
+from DashInputSystem import *
 from PhysicsSystem import *
+from TrailGenerator import *
 
 from ICController import *
 
@@ -15,6 +16,7 @@ from Renderable import *
 from Vector import *
 from Sprite import *
 from MovementControl import *
+from DashControl import *
 from InputControl import *
 
 class Game(pyglet.window.Window):
@@ -33,11 +35,13 @@ class Game(pyglet.window.Window):
 	def init_controller(self):
 		self.xmic = InputControl()	# X Movement Input Control
 		self.ymic = InputControl()	# Y Movement Input Control
+		self.dic  = InputControl()	# Dash Input Control
 		self.icc = ICController()
-		self.icc.add_key_control(key.L			,self.xmic, -1)
-		self.icc.add_key_control(key.APOSTROPHE	,self.xmic,  1)
-		self.icc.add_key_control(key.P			,self.ymic,  1)
-		self.icc.add_key_control(key.SEMICOLON	,self.ymic, -1)
+		self.icc.add_key_control(key.L,			 self.xmic, -1)
+		self.icc.add_key_control(key.APOSTROPHE, self.xmic,  1)
+		self.icc.add_key_control(key.P,			 self.ymic,  1)
+		self.icc.add_key_control(key.SEMICOLON,	 self.ymic, -1)
+		self.icc.add_key_control(key.D,			 self.dic,   1)
 
 	def init_world(self):
 		self.world = esp.World()
@@ -50,6 +54,7 @@ class Game(pyglet.window.Window):
 	def init_systems(self):
 		self.world.add_processor(RenderSystem(),		groups=[self.pgs["DRAW"]])
 		self.world.add_processor(MovementInputSystem(),	groups=[self.pgs["UPDATE"]])
+		self.world.add_processor(DashInputSystem(),		groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(TrailGenerator(),		groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(PhysicsSystem(),		groups=[self.pgs["FIXED_UPDATE"]])
 
@@ -60,10 +65,11 @@ class Game(pyglet.window.Window):
 		rend = Renderable()
 		rend.add_sprite(Sprite("head"))
 		rend.camera = camera
-		control = MovementControl()
-		control.add_control(self.xmic, Vector(1, 0))
-		control.add_control(self.ymic, Vector(0, 1))
-		entity = self.world.create_entity(Transform(), Motion(), Trail(), rend, control)
+		mcontrol = MovementControl()
+		mcontrol.add_control(self.xmic, Vector(1, 0))
+		mcontrol.add_control(self.ymic, Vector(0, 1))
+		dcontrol = DashControl(self.dic)
+		entity = self.world.create_entity(Transform(), Motion(), Trail(), rend, mcontrol, dcontrol)
 
 	def run(self):
 		pyglet.clock.schedule_interval(self.on_update, 1/120.0)
