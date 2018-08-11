@@ -3,7 +3,7 @@ class Trail:
 		self.list = []
 		self.next_trail_distance = 90
 		self.trail_lifetime = 2.5
-		self.max_trail_scale = 0.75
+		self.max_trail_scale = 0.70
 		self.min_trail_scale = 0.35
 
 	def add(self, handle):

@@ -267,6 +267,9 @@ class World:
             else:
                 raise StopIteration
 
+    def get_entity_component(self, entity, component_type, default=None):
+        return self._entities[entity].get(component_type, default)
+
     def _clear_dead_entities(self):
         """Finalize deletion of any Entities that are marked dead.
         
