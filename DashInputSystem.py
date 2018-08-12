@@ -19,26 +19,22 @@ class DashInputSystem(esp.Processor):
 						dcontrol.recovery_time_left = dcontrol.recovery_time
 						dcontrol.dash_time_left = dcontrol.dash_time
 						dcontrol.accel_time_left = dcontrol.accel_time
-						dcontrol.particle_time_left = dcontrol.particle_time
-						dcontrol.next_particle_interval = dcontrol.particle_interval
 						mcontrol.max_speed = dcontrol.max_speed
 						mcontrol.accel_speed = dcontrol.accel_speed
+						
+						if particles:
+							d = motion.acceleration.normalized()
+							vel = d.mul_scalar(-dcontrol.particle_speed)
+							offset = d.rotated(mathutils.HALF_PI).mul_scalar(dcontrol.particle_offset)
+							#pos = transform.pos.subbed_by(d.multed_by_scalar(dcontrol.particle_offset))
+							pos = transform.pos
+							particles.add("dashparticle", Transform(pos.added_to(offset), mathutils.HALF_PI - d.to_rot() - 0.2), lifetime=dcontrol.particle_lifetime, velocity=vel.rotated(0.2))
+							particles.add("dashparticle", Transform(pos.subbed_by(offset), mathutils.HALF_PI - d.to_rot() + 0.2), lifetime=dcontrol.particle_lifetime, velocity=vel.rotated(-0.2))
 				else:
 					pass
 					# Spot dodge
 
 			# Dash
-			if dcontrol.particle_time_left > 0:
-				dcontrol.particle_time_left -= dt
-			
-			if dcontrol.next_particle_interval > 0:
-				dcontrol.next_particle_interval = max(0, dcontrol.next_particle_interval - dt)
-
-				if dcontrol.next_particle_interval == 0 and dcontrol.particle_time_left >= 0 and particles is not None:
-					dcontrol.next_particle_interval = dcontrol.particle_interval
-					pos = transform.pos.added_to(Vector(random.random() * 40 - 20, random.random() * 40 - 20))
-					vel = motion.acceleration.normalized().mul_scalar(-dcontrol.particle_speed)
-					particles.add("dashcloud", Transform(pos, 1), lifetime=dcontrol.particle_lifetime, velocity=vel)
 
 			if dcontrol.recovery_time_left > 0:
 				dcontrol.recovery_time_left = max(0, dcontrol.recovery_time_left - dt)

@@ -71,6 +71,11 @@ class Vector:
 		if mag == 0: return Vector(0, 0)
 		return Vector(self.x / mag, self.y / mag)
 
+	# ROTATION
+
+	def rotated(self, amt):
+		return Vector.from_rot(self.to_rot() + amt).mul_scalar(self.magnitude())
+
 	# MAGNITUDE
 
 	def magnitude(self):

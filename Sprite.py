@@ -1,4 +1,4 @@
-import res, pyglet
+import math, res, pyglet
 from Transform import *
 from PygSpritePool import *
 
@@ -33,7 +33,7 @@ class Sprite():
 				self._spr.visible = data["value"]
 			elif data["name"] == "_create_internal_sprite":		
 				self._spr = self.pool.create(data["image"])
-			elif data["name"] == "_delete_internal_sprite":		
+			elif data["name"] == "_delete_internal_sprite":
 				self.pool.remove(self._spr)
 				self._spr = None
 		
@@ -44,12 +44,15 @@ class Sprite():
 			transform = Transform()
 		pos = transform.pos.added_to(self.transform.pos)
 		scale = transform.scale * self.transform.scale
+		rot = transform.rot + self.transform.rot
 		if camera:
 			pos = camera.rv(pos)
 			scale = camera.rs(scale)
+			#TODO: rot
 		self._spr.position = pos.x, pos.y
 		self._spr.scale = scale
 		self._spr.opacity = self.opacity * 255
+		self._spr.rotation = math.degrees(rot)
 
 	def delete(self):
 		self.todo.append({"name": "_delete_internal_sprite"})

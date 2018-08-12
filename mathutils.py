@@ -1,4 +1,6 @@
 import math
+HALF_PI	= math.pi / 2
+PI = math.pi
 TWO_PI = math.pi * 2
 
 def normalized_rot(rot):
