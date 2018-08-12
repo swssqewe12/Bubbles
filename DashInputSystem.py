@@ -15,43 +15,42 @@ class DashInputSystem(esp.Processor):
 			if dcontrol.ic.get_amt() > 0:
 				if mcontrol.is_moving and (motion.velocity.x != 0 or motion.velocity.y != 0):
 					# Dash
-					if dcontrol.curr_recovery_time == 0:
-						dcontrol.curr_recovery_time = dcontrol.recovery_time
-						dcontrol.curr_dash_time = dcontrol.dash_time
-						dcontrol.curr_accel_time = dcontrol.accel_time
-						dcontrol.curr_dashcloud_generation_time = dcontrol.dashcloud_generation_interval
+					if dcontrol.recovery_time_left == 0:
+						dcontrol.recovery_time_left = dcontrol.recovery_time
+						dcontrol.dash_time_left = dcontrol.dash_time
+						dcontrol.accel_time_left = dcontrol.accel_time
+						dcontrol.particle_time_left = dcontrol.particle_time
+						dcontrol.next_particle_interval = dcontrol.particle_interval
 						mcontrol.max_speed = dcontrol.max_speed
 						mcontrol.accel_speed = dcontrol.accel_speed
-						#diff = dcontrol.added_speed / motion.velocity.magnitude()
-						#motion.velocity.mul_scalar(diff)
 				else:
 					pass
 					# Spot dodge
 
 			# Dash
-			if dcontrol.curr_dashcloud_generation_time > 0:
-				dcontrol.curr_dashcloud_generation_time -= dt
-				dcontrol.curr_dashcloud_generation_time = max(0, dcontrol.curr_dashcloud_generation_time)
+			if dcontrol.particle_time_left > 0:
+				dcontrol.particle_time_left -= dt
+			
+			if dcontrol.next_particle_interval > 0:
+				dcontrol.next_particle_interval = max(0, dcontrol.next_particle_interval - dt)
 
-			if dcontrol.curr_recovery_time > 0:
-				dcontrol.curr_recovery_time -= dt
-				dcontrol.curr_recovery_time = max(0, dcontrol.curr_recovery_time)
+				if dcontrol.next_particle_interval == 0 and dcontrol.particle_time_left >= 0 and particles is not None:
+					dcontrol.next_particle_interval = dcontrol.particle_interval
+					pos = transform.pos.added_to(Vector(random.random() * 40 - 20, random.random() * 40 - 20))
+					vel = motion.acceleration.normalized().mul_scalar(-dcontrol.particle_speed)
+					particles.add("dashcloud", Transform(pos, 1), lifetime=dcontrol.particle_lifetime, velocity=vel)
 
-			if dcontrol.curr_dash_time > 0:
-				dcontrol.curr_dash_time -= dt
-				dcontrol.curr_dash_time = max(0, dcontrol.curr_dash_time)
+			if dcontrol.recovery_time_left > 0:
+				dcontrol.recovery_time_left = max(0, dcontrol.recovery_time_left - dt)
 
-				if dcontrol.curr_dash_time == 0:
+			if dcontrol.dash_time_left > 0:
+				dcontrol.dash_time_left = max(0, dcontrol.dash_time_left - dt)
+
+				if dcontrol.dash_time_left == 0:
 					mcontrol.max_speed = mcontrol.initial_max_speed
 
-			if dcontrol.curr_accel_time > 0:
-				dcontrol.curr_accel_time -= dt
-				dcontrol.curr_accel_time = max(0, dcontrol.curr_accel_time)
+			if dcontrol.accel_time_left > 0:
+				dcontrol.accel_time_left = max(0, dcontrol.accel_time_left - dt)
 
-				if dcontrol.curr_accel_time == 0:
+				if dcontrol.accel_time_left == 0:
 					mcontrol.accel_speed = mcontrol.initial_accel_speed
-
-				if dcontrol.curr_dashcloud_generation_time == 0 and particles is not None:
-					dcontrol.curr_dashcloud_generation_time = dcontrol.dashcloud_generation_interval
-					pos = transform.pos.added_to(Vector(random.random() * 10 - 5, random.random() * 10 - 5))
-					particles.add("dashcloud", Transform(pos, 1))

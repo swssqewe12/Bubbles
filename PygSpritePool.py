@@ -48,6 +48,7 @@ class PygSpritePool:
 			if spr == None: self.pool.pop()
 			else: break
 
-		for index in reversed(self.unused):
+		for i in reversed(range(len(self.unused))):
+			index = self.unused[i]
 			if index >= len(self.pool):
-				self.unused.pop(index)
+				self.unused.pop(i)

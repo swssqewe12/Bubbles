@@ -67,7 +67,9 @@ class Vector:
 		return self
 
 	def normalized(self):
-		raise NotImplementedError
+		mag = self.magnitude()
+		if mag == 0: return Vector(0, 0)
+		return Vector(self.x / mag, self.y / mag)
 
 	# MAGNITUDE
 
