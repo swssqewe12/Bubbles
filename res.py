@@ -17,4 +17,5 @@ def load_image(path, anchor_x=0, anchor_y=0, anchor_mode=ANCHOR_MODE_POSITION):
 images = {
 	"head": load_image("res/img/characters/normal/green/head.png", anchor_mode=ANCHOR_MODE_CENTER),
 	"tail": load_image("res/img/characters/normal/green/tail.png", anchor_mode=ANCHOR_MODE_CENTER),
+	"dashcloud": load_image("res/img/dashcloud.png", anchor_mode=ANCHOR_MODE_CENTER),
 }

@@ -16,7 +16,7 @@ class PygSpritePool:
 			spr.__index = len(self.pool) - 1
 			return spr
 		
-		index = self.unused[len(self.unused) - 1]
+		index = self.unused.pop()
 		spr = self.pool[index]
 
 		if not spr:
@@ -39,7 +39,6 @@ class PygSpritePool:
 			spr.visible = False
 
 	def _free(self):
-		#?: Does the _free function actually work?
 		for index in reversed(self.unused):
 			if self.pool[index] == None: continue
 			self.pool[index].delete()

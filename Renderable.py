@@ -12,7 +12,6 @@ class Renderable:
 
 	def remove_sprite(self, handle):
 		self.sprite_list[handle].delete()
-		del self.sprite_list[handle]
 
 	def get_sprite(self, handle):
 		return self.sprite_list[handle]

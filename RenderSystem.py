@@ -1,27 +1,37 @@
 import esp
 from Transform import *
 from Renderable import *
+from Particles import *
 from Sprite import *
 
 class RenderSystem(esp.Processor):
+	
+	def __init__(self):
+		self.particles = []
+
+	def update(self, dt):		
+		for ent, particles in self.world.get_component(Particles):
+			self.particles += particles.generate()
+
+		for particle in self.particles:
+			particle.update(dt)
 
 	def draw(self):
+		to_delete = []
+
 		for ent, (transform, rend) in self.world.get_components(Transform, Renderable):
-			for _, sprite in rend.sprite_list.items():
-				self.handle_todo(sprite, sprite.todo)
-				sprite.todo = []
+			for handle, sprite in rend.sprite_list.items():
 				sprite.prepare_render(transform, rend.camera)
+				if not sprite.is_alive():
+					to_delete.append((handle, sprite))
+		
+		for handle, sprite in to_delete:
+			del rend.sprite_list[handle]
+
+		for i in reversed(range(len(self.particles))):
+			particle = self.particles[i]
+			particle.prepare_render(rend.camera)
+			if not particle.is_alive():
+				self.particles.pop(i)
 
 		Sprite.SPRITE_BATCH.draw()
-
-	def handle_todo(self, sprite, todo):
-		#TODO: move inside Sprite class
-		for data in todo:
-			if data["name"] == "set_image":
-				sprite._spr.image = data["image"]
-			elif data["name"] == "set_visible":
-				sprite._spr.visible = data["value"]
-			elif data["name"] == "_create_internal_sprite":		
-				sprite._spr = sprite.pool.create(data["image"])
-			elif data["name"] == "_delete_internal_sprite":		
-				sprite.pool.remove(sprite._spr)

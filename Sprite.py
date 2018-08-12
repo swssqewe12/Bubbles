@@ -26,6 +26,20 @@ class Sprite():
 		return ret
 
 	def prepare_render(self, transform=None, camera=None):
+		for data in self.todo:
+			if data["name"] == "set_image":
+				self._spr.image = data["image"]
+			elif data["name"] == "set_visible":
+				self._spr.visible = data["value"]
+			elif data["name"] == "_create_internal_sprite":		
+				self._spr = self.pool.create(data["image"])
+			elif data["name"] == "_delete_internal_sprite":		
+				self.pool.remove(self._spr)
+				self._spr = None
+		
+		self.todo = []
+		if self._spr == None: return
+		
 		if transform is None or not self.is_relative:
 			transform = Transform()
 		pos = transform.pos.added_to(self.transform.pos)
@@ -39,6 +53,9 @@ class Sprite():
 
 	def delete(self):
 		self.todo.append({"name": "_delete_internal_sprite"})
+
+	def is_alive(self):
+		return self._spr is not None
 
 	@staticmethod
 	def get_group(z_index):

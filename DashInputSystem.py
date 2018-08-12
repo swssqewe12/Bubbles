@@ -54,4 +54,4 @@ class DashInputSystem(esp.Processor):
 				if dcontrol.curr_dashcloud_generation_time == 0 and particles is not None:
 					dcontrol.curr_dashcloud_generation_time = dcontrol.dashcloud_generation_interval
 					pos = transform.pos.added_to(Vector(random.random() * 10 - 5, random.random() * 10 - 5))
-					particles.add(Particle("dashcloud", Transform(pos, 0)))
+					particles.add("dashcloud", Transform(pos, 1))
