@@ -28,12 +28,21 @@ class DashInputSystem(esp.Processor):
 						motion.acceleration = target_accel
 						
 						if particles:
+							# calculations
 							d = motion.acceleration.normalized()
-							vel = d.mul_scalar(-dcontrol.particle_speed)
 							offset = d.rotated(mathutils.HALF_PI).mul_scalar(dcontrol.particle_offset)
-							pos = transform.pos.added_to(d.multed_by_scalar(-dcontrol.particle_offset))
-							particles.add("dashparticle", Transform(pos.added_to(offset), mathutils.HALF_PI - d.to_rot() - 0.2), lifetime=dcontrol.particle_lifetime, velocity=vel.rotated(0.2))
-							particles.add("dashparticle", Transform(pos.subbed_by(offset), mathutils.HALF_PI - d.to_rot() + 0.2), lifetime=dcontrol.particle_lifetime, velocity=vel.rotated(-0.2))
+
+							# paramaters
+							name = "dashparticle"
+							pos = transform.pos#.added_to(d.multed_by_scalar(dcontrol.particle_offset))
+							rot = mathutils.HALF_PI - d.to_rot()
+							vel = d.mul_scalar(-dcontrol.particle_speed)
+							lifetime = dcontrol.particle_lifetime
+							opacity_func = lambda x: x
+
+							# creation
+							particles.add(name, Transform(pos.added_to (offset), rot + 0.1), lifetime=lifetime, velocity=vel.rotated(-0.2), opacity_func=opacity_func)
+							particles.add(name, Transform(pos.subbed_by(offset), rot - 0.1), lifetime=lifetime, velocity=vel.rotated( 0.2), opacity_func=opacity_func)
 				else:
 					pass
 					# Spot dodge
