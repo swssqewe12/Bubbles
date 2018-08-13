@@ -19,11 +19,14 @@ class DashInputSystem(esp.Processor):
 						dcontrol.recovery_time_left = dcontrol.recovery_time
 						dcontrol.dash_time_left = dcontrol.dash_time
 						dcontrol.accel_time_left = dcontrol.accel_time
-						mcontrol.max_speed = dcontrol.max_speed
-						mcontrol.accel_speed = dcontrol.accel_speed
+						#dcontrol.target_rot = motion.velocity.to_rot()
+						mcontrol.disabled += 1
+						motion.acceleration = motion.velocity.set_length(dcontrol.accel_speed)
+						#mcontrol.max_speed = dcontrol.max_speed
+						#mcontrol.accel_speed = dcontrol.accel_speed
 						
 						if particles:
-							d = motion.acceleration.normalized()
+							d = motion.velocity.normalized()
 							vel = d.mul_scalar(-dcontrol.particle_speed)
 							offset = d.rotated(mathutils.HALF_PI).mul_scalar(dcontrol.particle_offset)
 							#pos = transform.pos.subbed_by(d.multed_by_scalar(dcontrol.particle_offset))
@@ -43,10 +46,13 @@ class DashInputSystem(esp.Processor):
 				dcontrol.dash_time_left = max(0, dcontrol.dash_time_left - dt)
 
 				if dcontrol.dash_time_left == 0:
-					mcontrol.max_speed = mcontrol.initial_max_speed
+					mcontrol.disabled -= 1
+					#mcontrol.max_speed = mcontrol.initial_max_speed
 
 			if dcontrol.accel_time_left > 0:
 				dcontrol.accel_time_left = max(0, dcontrol.accel_time_left - dt)
+				motion.velocity.set_max_length(dcontrol.max_speed)
 
 				if dcontrol.accel_time_left == 0:
-					mcontrol.accel_speed = mcontrol.initial_accel_speed
+					pass
+					#mcontrol.accel_speed = mcontrol.initial_accel_speed

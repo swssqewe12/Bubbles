@@ -16,3 +16,4 @@ class DashControl:
 		self.accel_time_left = 0
 		self.particle_time_left = 0
 		self.next_particle_interval = 0
+		#self.target_rot = 0

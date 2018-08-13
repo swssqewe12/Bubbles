@@ -97,8 +97,17 @@ class Vector:
 
 	# ROTATION
 
+	def rotate(self, amt):
+		raise NotImplementedError
+
 	def rotated(self, amt):
 		return Vector.from_rot(self.to_rot() + amt).mul_scalar(self.magnitude())
+
+	def set_rotation(self, amt):
+		return Vector.from_rot(amt).mul_scalar(self.magnitude())
+
+	def with_rotation(self, amt):
+		raise NotImplementedError
 
 	# MAGNITUDE
 
