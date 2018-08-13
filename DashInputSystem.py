@@ -19,17 +19,19 @@ class DashInputSystem(esp.Processor):
 						dcontrol.recovery_time_left = dcontrol.recovery_time
 						dcontrol.dash_time_left = dcontrol.dash_time
 						dcontrol.accel_time_left = dcontrol.accel_time
-						#dcontrol.target_rot = motion.velocity.to_rot()
 						mcontrol.disabled += 1
-						motion.acceleration = motion.velocity.set_length(dcontrol.accel_speed)
-						#mcontrol.max_speed = dcontrol.max_speed
-						#mcontrol.accel_speed = dcontrol.accel_speed
+
+						'''diff = mathutils.rot_diff(motion.velocity.to_rot(), mcontrol.rot)
+						if diff > mathutils.DEG_135 or diff < mathutils.DEG_NEG_135:
+							target_accel = Vector.from_rot(mcontrol.rot).mul_scalar(dcontrol.accel_speed)
+						else:
+							target_accel = motion.velocity.set_length(dcontrol.accel_speed)'''
+						motion.acceleration = motion.velocity.with_length(0.9).add(Vector.from_rot(mcontrol.rot).normalize()).set_length(dcontrol.accel_speed)
 						
 						if particles:
 							d = motion.velocity.normalized()
 							vel = d.mul_scalar(-dcontrol.particle_speed)
 							offset = d.rotated(mathutils.HALF_PI).mul_scalar(dcontrol.particle_offset)
-							#pos = transform.pos.subbed_by(d.multed_by_scalar(dcontrol.particle_offset))
 							pos = transform.pos
 							particles.add("dashparticle", Transform(pos.added_to(offset), mathutils.HALF_PI - d.to_rot() - 0.2), lifetime=dcontrol.particle_lifetime, velocity=vel.rotated(0.2))
 							particles.add("dashparticle", Transform(pos.subbed_by(offset), mathutils.HALF_PI - d.to_rot() + 0.2), lifetime=dcontrol.particle_lifetime, velocity=vel.rotated(-0.2))
@@ -47,12 +49,7 @@ class DashInputSystem(esp.Processor):
 
 				if dcontrol.dash_time_left == 0:
 					mcontrol.disabled -= 1
-					#mcontrol.max_speed = mcontrol.initial_max_speed
 
 			if dcontrol.accel_time_left > 0:
 				dcontrol.accel_time_left = max(0, dcontrol.accel_time_left - dt)
 				motion.velocity.set_max_length(dcontrol.max_speed)
-
-				if dcontrol.accel_time_left == 0:
-					pass
-					#mcontrol.accel_speed = mcontrol.initial_accel_speed

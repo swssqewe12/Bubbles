@@ -73,7 +73,7 @@ class Vector:
 		return self
 
 	def with_length(self, length):
-		raise NotImplementedError
+		return self.normalized().mul_scalar(length)
 
 	def with_min_length(self, length):
 		raise NotImplementedError
@@ -104,10 +104,12 @@ class Vector:
 		return Vector.from_rot(self.to_rot() + amt).mul_scalar(self.magnitude())
 
 	def set_rotation(self, amt):
-		return Vector.from_rot(amt).mul_scalar(self.magnitude())
+		result = Vector.from_rot(amt).mul_scalar(self.magnitude())
+		self.x, self.y = result.x, result.y
+		return self
 
 	def with_rotation(self, amt):
-		raise NotImplementedError
+		return Vector.from_rot(amt).mul_scalar(self.magnitude())
 
 	# MAGNITUDE
 

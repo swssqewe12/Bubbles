@@ -3,6 +3,9 @@ HALF_PI	= math.pi / 2
 PI = math.pi
 TWO_PI = math.pi * 2
 
+DEG_135 = 3 * math.pi / 4
+DEG_NEG_135 = -DEG_135
+
 def normalized_rot(rot):
 	return rot % TWO_PI
 
