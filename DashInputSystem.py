@@ -20,16 +20,10 @@ class DashInputSystem(esp.Processor):
 						dcontrol.dash_time_left = dcontrol.dash_time
 						dcontrol.accel_time_left = dcontrol.accel_time
 						mcontrol.disabled += 1
-
-						'''diff = mathutils.rot_diff(motion.velocity.to_rot(), mcontrol.rot)
-						if diff > mathutils.DEG_135 or diff < mathutils.DEG_NEG_135:
-							target_accel = Vector.from_rot(mcontrol.rot).mul_scalar(dcontrol.accel_speed)
-						else:
-							target_accel = motion.velocity.set_length(dcontrol.accel_speed)'''
 						motion.acceleration = motion.velocity.with_length(0.9).add(Vector.from_rot(mcontrol.rot).normalize()).set_length(dcontrol.accel_speed)
 						
 						if particles:
-							d = motion.velocity.normalized()
+							d = motion.acceleration.normalized()
 							vel = d.mul_scalar(-dcontrol.particle_speed)
 							offset = d.rotated(mathutils.HALF_PI).mul_scalar(dcontrol.particle_offset)
 							pos = transform.pos
