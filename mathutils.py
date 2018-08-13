@@ -11,3 +11,6 @@ def rot_diff(a, b):
 	if   diff < -math.pi: diff += TWO_PI
 	elif diff >  math.pi: diff -= TWO_PI
 	return diff
+
+def map_range(x, a, b, c, d):
+   return (x-a)/(b-a)*(d-c)+c

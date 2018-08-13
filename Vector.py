@@ -57,6 +57,30 @@ class Vector:
 	def dived_by_scalar(self, scalar):
 		raise NotImplementedError
 
+	# LENGTH
+
+	def set_length(self, length):
+		self.normalize().mul_scalar(length)
+		return self
+
+	def set_min_length(self, length):
+		raise NotImplementedError
+
+	def set_max_length(self, length):
+		mag = self.magnitude()
+		if mag > length:
+			self.set_length(length)
+		return self
+
+	def with_length(self, length):
+		raise NotImplementedError
+
+	def with_min_length(self, length):
+		raise NotImplementedError
+	
+	def with_max_length(self, length):
+		raise NotImplementedError
+
 	# NORMALIZE
 
 	def normalize(self):
@@ -90,6 +114,10 @@ class Vector:
 
 	def copy(self):
 		return Vector(self.x, self.y)
+
+	def clear(self):
+		self.x, self.y = 0, 0
+		return self
 
 	def __repr__(self):
 		return "Vector(" + str(self.x) + ", " + str(self.y) + ")"

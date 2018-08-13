@@ -4,6 +4,9 @@ class InputControl:
 
 	def add_amt(self, x):
 		self.amt += x
+		
+	def set_amt(self, x):
+		self.amt = x
 
 	def get_amt(self):
 		return max(min(self.amt, 1), -1)

@@ -12,6 +12,6 @@ class MovementInputSystem(esp.Processor):
 				accel.add(vec.multed_by_scalar(ic.get_amt()))
 			control.is_moving = False if accel.x == 0 and accel.y == 0 else True
 			
-			motion.acceleration = accel.normalize().mul_scalar(control.accel_speed)
+			motion.acceleration = accel.set_max_length(1).mul_scalar(control.accel_speed)
 			if motion.velocity.magnitude() > control.max_speed:
 				motion.velocity.normalize().mul_scalar(control.max_speed)

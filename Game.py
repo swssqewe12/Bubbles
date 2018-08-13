@@ -20,6 +20,26 @@ from DashControl import *
 from InputControl import *
 from Particles import *
 
+class JoystickManager:
+	
+	def __init__(self):
+		self.icc_list = []
+
+	def add_icc(self, icc):
+		self.icc_list.append(icc)
+
+	def on_joybutton_press(self, joystick, button):
+		for icc in self.icc_list:
+			icc.on_joy_btn_down(button)
+
+	def on_joybutton_release(self, joystick, button):
+		for icc in self.icc_list:
+			icc.on_joy_btn_up(button)
+
+	def on_joyaxis_motion(self, joystick, axis, value):
+		for icc in self.icc_list:
+			icc.on_joy_motion(axis, value)
+
 class Game(pyglet.window.Window):
 	def __init__(self):
 		self.init_window()
@@ -34,15 +54,29 @@ class Game(pyglet.window.Window):
 		super().__init__(config=config, resizable=True, fullscreen=True)
 
 	def init_controller(self):
+		self.icc = ICController()
+
 		self.xmic = InputControl()	# X Movement Input Control
 		self.ymic = InputControl()	# Y Movement Input Control
 		self.dic  = InputControl()	# Dash Input Control
-		self.icc = ICController()
+
 		self.icc.add_key_control(key.L,			 self.xmic, -1)
 		self.icc.add_key_control(key.APOSTROPHE, self.xmic,  1)
 		self.icc.add_key_control(key.P,			 self.ymic,  1)
 		self.icc.add_key_control(key.SEMICOLON,	 self.ymic, -1)
 		self.icc.add_key_control(key.D,			 self.dic,   1)
+
+		self.icc.add_joy_motion_control('x', self.xmic,	(-1,  1), min=0.2)
+		self.icc.add_joy_motion_control('y', self.ymic, ( 1, -1), min=0.2)
+
+		self.icc.add_joy_btn_control(2, self.dic, 1)
+
+		self.joystick_manager = JoystickManager()
+		self.joystick_manager.add_icc(self.icc)
+
+		for joystick in pyglet.input.get_joysticks():
+			joystick.open()
+			joystick.push_handlers(self.joystick_manager)
 
 	def init_world(self):
 		self.world = esp.World()
