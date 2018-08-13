@@ -17,16 +17,15 @@ class RenderSystem(esp.Processor):
 			particle.update(dt)
 
 	def draw(self):
-		to_delete = []
-
 		for ent, (transform, rend) in self.world.get_components(Transform, Renderable):
+			to_delete = []
 			for handle, sprite in rend.sprite_list.items():
 				sprite.prepare_render(transform, rend.camera)
 				if not sprite.is_alive():
 					to_delete.append((handle, sprite))
 		
-		for handle, sprite in to_delete:
-			del rend.sprite_list[handle]
+			for handle, sprite in to_delete:
+				del rend.sprite_list[handle]
 
 		for i in reversed(range(len(self.particles))):
 			particle = self.particles[i]
