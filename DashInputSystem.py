@@ -31,7 +31,7 @@ class DashInputSystem(esp.Processor):
 							d = motion.acceleration.normalized()
 							vel = d.mul_scalar(-dcontrol.particle_speed)
 							offset = d.rotated(mathutils.HALF_PI).mul_scalar(dcontrol.particle_offset)
-							pos = transform.pos
+							pos = transform.pos.added_to(d.multed_by_scalar(-dcontrol.particle_offset))
 							particles.add("dashparticle", Transform(pos.added_to(offset), mathutils.HALF_PI - d.to_rot() - 0.2), lifetime=dcontrol.particle_lifetime, velocity=vel.rotated(0.2))
 							particles.add("dashparticle", Transform(pos.subbed_by(offset), mathutils.HALF_PI - d.to_rot() + 0.2), lifetime=dcontrol.particle_lifetime, velocity=vel.rotated(-0.2))
 				else:
