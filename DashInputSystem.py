@@ -23,7 +23,7 @@ class DashInputSystem(esp.Processor):
 
 						target_accel = motion.velocity.with_length(dcontrol.accel_speed)
 						diff = mathutils.rot_diff(motion.velocity.to_rot(), mcontrol.rot)
-						if diff > mathutils.DEG_135 or diff < mathutils.DEG_NEG_135:
+						if diff > dcontrol.backwards_dash_rot_diff or diff < -dcontrol.backwards_dash_rot_diff:
 							target_accel.mul_scalar(-1)
 						motion.acceleration = target_accel
 						

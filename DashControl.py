@@ -1,3 +1,5 @@
+import math
+
 class DashControl:
 	def __init__(self, ic):
 		self.ic = ic
@@ -14,3 +16,4 @@ class DashControl:
 		self.accel_time_left = 0
 		self.particle_time_left = 0
 		self.next_particle_interval = 0
+		self.backwards_dash_rot_diff = math.radians(120)
