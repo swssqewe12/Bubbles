@@ -9,7 +9,7 @@ from Transform import *
 from Motion import *
 from Renderable import *
 from MovementControl import *
-from DashControl import *
+from BoostControl import *
 from Trail import *
 from Particles import *
 
@@ -41,5 +41,5 @@ class PlayerControllerManager(esp.Processor):
 				mcontrol = MovementControl()
 				mcontrol.add_control(ic_x, Vector(1, 0))
 				mcontrol.add_control(ic_y, Vector(0, 1))
-				dcontrol = DashControl(ic_dash)
-				entity = self.world.create_entity(Transform(), Motion(), Trail(), Particles(), rend, mcontrol, dcontrol)
+				bcontrol = BoostControl(ic_dash)
+				entity = self.world.create_entity(Transform(), Motion(), Trail(), Particles(), rend, mcontrol, bcontrol)
