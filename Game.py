@@ -5,6 +5,7 @@ from pyglet.window import key
 from PlayerControllerManager import *
 from MovementInputSystem import *
 from BoostInputSystem import *
+from DodgeInputSystem import *
 from PhysicsSystem import *
 from TrailGenerator import *
 from RenderSystem import *
@@ -38,6 +39,8 @@ class Game(pyglet.window.Window):
 		self.world.add_processor(MovementInputSystem(),
 			groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(BoostInputSystem(),
+			groups=[self.pgs["UPDATE"]])
+		self.world.add_processor(DodgeInputSystem(),
 			groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(TrailGenerator(),
 			groups=[self.pgs["UPDATE"]])

@@ -3,3 +3,4 @@ class PlayerICCUnit:
 		self.pyglet_controller = pyglet_controller
 		self.connect_ic = connect_ic
 		self.controller_profile = controller_profile
+		self.controller_icc = None
