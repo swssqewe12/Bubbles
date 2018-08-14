@@ -1,10 +1,11 @@
 import esp, controller_profiles, pyglet
 from PygletICCBinder import *
 from PlayerICCUnit import *
-
-# Components
 from Vector import *
 from Sprite import *
+
+# Components
+from PlayerTag import *
 from Transform import *
 from Motion import *
 from Renderable import *
@@ -46,4 +47,4 @@ class PlayerControllerManager(esp.Processor):
 				bcontrol = BoostControl(ic_dash)
 				dodge = DodgeControl(ic_dash)
 				dodge.sprite_handles.append(head)
-				entity = self.world.create_entity(Transform(), Motion(), Trail(), Particles(), rend, mcontrol, bcontrol, dodge)
+				entity = self.world.create_entity(PlayerTag(), Transform(), Motion(), Trail(), Particles(), rend, mcontrol, bcontrol, dodge)

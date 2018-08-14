@@ -49,7 +49,7 @@ class World:
         self._entities.clear()
         self.clear_cache()
 
-    def add_processor(self, processor_instance, priority=0, groups=[]):
+    def add_processor(self, processor_instance, groups=[]):
         """Add a Processor instance to the World.
         :param processor_instance: An instance of a Processor,
         subclassed from the Processor class.
@@ -58,13 +58,13 @@ class World:
         """
         groups.append(self._default_processor_group)
         assert issubclass(processor_instance.__class__, Processor)
-        processor_instance.priority = priority
+        #processor_instance.priority = priority
         processor_instance.world = self
         
         for group in groups:
             processor_group = self._processor_groups[group]
             processor_group.append(processor_instance)
-            processor_group.sort(key=lambda proc: proc.priority, reverse=True)
+            #processor_group.sort(key=lambda proc: proc.priority, reverse=True)
 
     def remove_processor(self, processor_type):
         """Remove a Processor from the World, by type.

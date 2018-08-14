@@ -7,6 +7,8 @@ from MovementInputSystem import *
 from BoostInputSystem import *
 from DodgeInputSystem import *
 from PhysicsSystem import *
+from GameCameraMovementSystem import *
+from CameraLerpSystem import *
 from TrailGenerator import *
 from RenderSystem import *
 
@@ -44,6 +46,10 @@ class Game(pyglet.window.Window):
 			groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(TrailGenerator(),
 			groups=[self.pgs["UPDATE"]])
+		self.world.add_processor(GameCameraMovementSystem(self.game_camera),
+			groups=[self.pgs["UPDATE"]])
+		self.world.add_processor(CameraLerpSystem([self.game_camera]),
+			groups=[self.pgs["FIXED_UPDATE"]])
 		self.world.add_processor(PhysicsSystem(),
 			groups=[self.pgs["FIXED_UPDATE"]])
 		self.world.add_processor(RenderSystem(),
@@ -51,8 +57,8 @@ class Game(pyglet.window.Window):
 
 	def init_cameras(self):
 		screen_size = self.get_size()
-		self.game_camera = Camera(constants.VIRTUAL_WIDTH)
-		self.game_camera.size = Vector(screen_size[0], screen_size[1])
+		self.game_camera = Camera(constants.VIRTUAL_SIZE)
+		self.game_camera.set_size(Vector(screen_size[0], screen_size[1]))
 
 	def run(self):
 		pyglet.clock.schedule_interval(self.on_update, 1/120.0)
