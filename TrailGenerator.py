@@ -33,14 +33,3 @@ class TrailGenerator(esp.Processor):
 				if sprite.opacity <= 0:
 					trail.pop(i)
 					rend.remove_sprite(handle)
-
-			'''create_tail = False
-			newest_handle = trail.get_newest()
-
-			if newest_handle:
-				newest_sprite = rend.get_sprite(newest_handle)
-				dist = transform.pos.subbed_by(newest_sprite.get_absolute_pos(transform.pos)).magnitude()
-				if dist >= trail.next_trail_distance:
-					create_tail = True
-			else:
-				create_tail = True'''
