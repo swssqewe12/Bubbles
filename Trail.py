@@ -9,9 +9,9 @@ class Trail:
 	def add(self, handle):
 		self.list.insert(0, handle)
 
-	def pop_oldest(self):
-		if len(self.list) != 0: 
-			return self.list.pop()
+	def pop(self, i):
+		if len(self.list) > i: 
+			return self.list.pop(i)
 
 	def get_newest(self):
 		if len(self.list) == 0: return None

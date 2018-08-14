@@ -20,12 +20,19 @@ class TrailGenerator(esp.Processor):
 					min_dist = dist
 					min_dist_sprite = sprite
 
-			oldest_handle = trail.get_oldest()
-			if oldest_handle:
-				oldest_sprite = rend.get_sprite(oldest_handle)
-				if oldest_sprite.opacity <= 0:
-					trail.pop_oldest()
-					rend.remove_sprite(oldest_handle)
+			if min_dist_sprite and min_dist < trail.next_trail_distance:
+				min_dist_sprite.opacity = 1
+				min_dist_sprite.transform.scale = trail.max_trail_scale
+			else:
+				handle = rend.add_sprite(Sprite("tail", -1, False, Transform(transform.pos.copy(), scale=trail.max_trail_scale)))
+				trail.add(handle)
+
+			for i in reversed(range(len(trail.list))):
+				handle = trail.list[i]
+				sprite = rend.get_sprite(handle)
+				if sprite.opacity <= 0:
+					trail.pop(i)
+					rend.remove_sprite(handle)
 
 			'''create_tail = False
 			newest_handle = trail.get_newest()
@@ -37,10 +44,3 @@ class TrailGenerator(esp.Processor):
 					create_tail = True
 			else:
 				create_tail = True'''
-
-			if min_dist_sprite and min_dist < trail.next_trail_distance:
-				min_dist_sprite.opacity = 1
-				min_dist_sprite.transform.scale = trail.max_trail_scale
-			else:
-				handle = rend.add_sprite(Sprite("tail", -1, False, Transform(transform.pos.copy(), scale=trail.max_trail_scale)))
-				trail.add(handle)
