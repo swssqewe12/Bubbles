@@ -40,8 +40,8 @@ class DodgeInputSystem(esp.Processor):
 		if rend:
 			for handle in dodge.sprite_handles:
 				x = dodge.dodge_time_left / dodge.dodge_time
-				rend.get_sprite(handle).opacity = 0.5#x if x >= 0.5 else 1 - x
+				rend.get_sprite(handle).opacity = 0.5
 
 		# reset recovery times
 		dodge.recovery_time_left = dodge.recovery_time
-		if boost: boost.recovery_time_left = max(boost.recovery_time_left, dodge.recovery_time)
+		if boost: boost.recovery_time_left = dodge.recovery_time
