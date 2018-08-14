@@ -2,7 +2,7 @@ class MovementControl:
 	def __init__(self):
 		self.ic_list = []
 		self.accel_speed = 1250
-		self.max_speed = 375
+		self.max_speed = 450
 		self.is_moving = False
 		self.rot = 0
 		self.disabled = 0

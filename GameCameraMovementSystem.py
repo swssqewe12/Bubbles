@@ -6,7 +6,7 @@ class GameCameraMovementSystem(esp.Processor):
 	
 	def __init__(self, camera):
 		self.camera = camera
-		self.camera.lerp_speed = 0.002
+		self.camera.lerp_speed = 0.004
 		self.camera.min_zoom = 0.4
 		self.camera.max_zoom = 0.8
 
