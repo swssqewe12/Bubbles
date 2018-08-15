@@ -62,6 +62,6 @@ class PlayerControllerManager(esp.Processor):
 			scale_func	 = lambda x,y: head_spr.transform.scale,
 			opacity_func = lambda x,y: 0.8,
 			rot_func	 = lambda bub_spr,_: mathutils.DEG_180-Vector(bub_spr.offscreen_x, bub_spr.offscreen_y).to_rot()+mathutils.DEG_90))
-		bubble.roo = -head_sbo
+		bubble.roo = 64
 		bubble.sprites_to_set_invisible.append(head_spr)
 		entity = self.world.create_entity(PlayerTag(), Transform(), Motion(), Trail(), Particles(), rend, mcontrol, bcontrol, dodge, bubble)
