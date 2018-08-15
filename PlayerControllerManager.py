@@ -4,6 +4,7 @@ from PlayerICCUnit import *
 from Vector import *
 from Sprite import *
 from BubbleSprite import *
+from CircleCollider import *
 
 # Components
 from PlayerTag import *
@@ -13,6 +14,9 @@ from Renderable import *
 from MovementControl import *
 from BoostControl import *
 from DodgeControl import *
+from DashControl import *
+from Hurtboxes import *
+from Hitboxes import *
 from Trail import *
 from Particles import *
 from Bubble import *
@@ -42,6 +46,7 @@ class PlayerControllerManager(esp.Processor):
 				self.create_player_entity(ic_x, ic_y, ic_dash)
 
 	def create_player_entity(self, ic_x, ic_y, ic_dash):
+		transform = Transform()
 		rend = Renderable()
 		head_spr = Sprite("head")
 		head = rend.add_sprite(head_spr)
@@ -50,10 +55,14 @@ class PlayerControllerManager(esp.Processor):
 		mcontrol.add_control(ic_x, Vector(1, 0))
 		mcontrol.add_control(ic_y, Vector(0, 1))
 		bcontrol = BoostControl(ic_dash)
-		dodge = DodgeControl(ic_dash)
-		dodge.sprite_handles.append(head)
+		#dodge = DodgeControl(ic_dash)
+		#dodge.sprite_handles.append(head)
+		dash = DashControl(ic_dash)
+		# swoosh
 		bubble = Bubble()
 		bubble.camera = self.camera
+		hubs = Hurtboxes()
+		hibs = Hitboxes()
 		head_sbo = 64 + 63
 		bubble.add_bubble_sprite(BubbleSprite("head", 2, sbo=head_sbo,
 			scale_func	 = lambda x,y: head_spr.transform.scale,
@@ -64,4 +73,5 @@ class PlayerControllerManager(esp.Processor):
 			rot_func	 = lambda bub_spr,_: mathutils.DEG_180-Vector(bub_spr.offscreen_x, bub_spr.offscreen_y).to_rot()+mathutils.DEG_90))
 		bubble.roo = 64
 		bubble.sprites_to_set_invisible.append(head_spr)
-		entity = self.world.create_entity(PlayerTag(), Transform(), Motion(), Trail(), Particles(), rend, mcontrol, bcontrol, dodge, bubble)
+		entity = self.world.create_entity(PlayerTag(), transform, Motion(), Trail(), Particles(), rend, mcontrol, bcontrol, bubble, dash, hubs, hibs)
+		hubs.add(CircleCollider(Vector(0, 0), 64, rel_pos=lambda pos: transform.pos.added_to(pos), entity=entity))

@@ -13,7 +13,7 @@ class DodgeInputSystem(esp.Processor):
 			boost = self.world.get_entity_component(ent, BoostControl)
 
 			if dodge.ic.get_amt() > 0 and dodge.recovery_time_left == 0:
-				if movement.is_moving and (motion.velocity.x != 0 or motion.velocity.y != 0) and dodge.can_forward_dodge and boost.recovery_time_left > 0:
+				if movement.is_moving and (motion.velocity.x != 0 or motion.velocity.y != 0) and dodge.can_forward_dodge and (not boost or boost.recovery_time_left > 0):
 					self.dodge(rend, movement, dodge, boost)
 				elif dodge.recovery_time_left == 0 and dodge.can_spot_dodge:
 					self.dodge(rend, movement, dodge, boost)

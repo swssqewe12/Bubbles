@@ -165,6 +165,9 @@ class World:
         assigned to the passed Entity ID.
         """
         return tuple(self._entities[entity].values())
+	
+    def get_entity_component(self, entity, component_type, default=None):
+        return self._entities[entity].get(component_type, default)
 
     def has_component(self, entity, component_type):
         """Check if a specific Entity has a Component of a certain type.
@@ -266,9 +269,6 @@ class World:
                 yield self._entities[entity][component_type]
             else:
                 raise StopIteration
-
-    def get_entity_component(self, entity, component_type, default=None):
-        return self._entities[entity].get(component_type, default)
 
     def _clear_dead_entities(self):
         """Finalize deletion of any Entities that are marked dead.

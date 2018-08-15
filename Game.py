@@ -6,12 +6,14 @@ from PlayerControllerManager import *
 from MovementInputSystem import *
 from BoostInputSystem import *
 from DodgeInputSystem import *
+from DashInputSystem import *
 from PhysicsSystem import *
 from GameCameraMovementSystem import *
 from CameraLerpSystem import *
 from TrailGenerator import *
 from BubbleGenerator import *
 from RenderSystem import *
+from CollisionSystem import *
 
 # Temporary imports
 from Camera import *
@@ -45,9 +47,13 @@ class Game(pyglet.window.Window):
 			groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(DodgeInputSystem(),
 			groups=[self.pgs["UPDATE"]])
+		self.world.add_processor(DashInputSystem(),
+			groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(TrailGenerator(),
 			groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(BubbleGenerator(),
+			groups=[self.pgs["UPDATE"]])
+		self.world.add_processor(CollisionSystem(),
 			groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(GameCameraMovementSystem(self.game_camera),
 			groups=[self.pgs["UPDATE"]])
