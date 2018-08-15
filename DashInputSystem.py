@@ -24,7 +24,7 @@ class DashInputSystem(esp.Processor):
 					dash.dash_time_left = dash.dash_time
 					dash.recovery_time_left = dash.recovery_time
 					dash.current_collider = CircleCollider(motion.acceleration.normalized().mul_scalar(dash.offset), dash.range, rel_pos=(lambda transform: lambda pos: transform.pos.added_to(pos))(transform), entity=ent)
-					dash.current_collider.on_collision = self.create_on_collision_handler(dash, motion)
+					dash.current_collider.on_collision = self.create_on_collision_handler(dash, motion, transform)
 					hitboxes.add(dash.current_collider)
 					movement.disabled += 1
 
@@ -48,17 +48,24 @@ class DashInputSystem(esp.Processor):
 			else:
 				self.movements_to_enable[i] = (movement, time_left)
 
-	def create_on_collision_handler(self, this_dash, this_motion):
+	def create_on_collision_handler(self, this_dash, this_motion, this_transform):
 		handled = {}
 
 		def handler(this, target):
 			if this.entity != target.entity and not handled.get(target, False):
 				handled[target] = True
 				if self.world.has_component(target.entity, PlayerTag):
+					target_transform = self.world.get_entity_component(target.entity, Transform)
 					target_motion = self.world.get_entity_component(target.entity, Motion)
 					target_movement = self.world.get_entity_component(target.entity, MovementControl)
 					if target_motion:
-						target_motion.velocity.add(this_motion.acceleration.normalized().mul_scalar(this_dash.fixed_force))
+						direction = target_transform.pos.subbed_by(this_transform.pos).normalize()
+						force = this_dash.fixed_force # TODO: variable force
+						change = direction.multed_by_scalar(force)
+						target_motion.velocity.add(change)
+						#this_motion.velocity.sub(change)
+						#this_motion.velocity.clear()
+						#target_motion.velocity.add(this_motion.acceleration.normalized().mul_scalar(this_dash.fixed_force))
 					if target_movement:
 						target_movement.disabled += 1
 						self.movements_to_enable.append((target_movement, this_dash.stun_time))

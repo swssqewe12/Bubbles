@@ -4,7 +4,7 @@ import esp
 from Hitboxes import *
 from Hurtboxes import *
 
-class CollisionSystem(esp.Processor):
+class CollisionDetector(esp.Processor):
 
 	def __init__(self):
 		self.hitboxes = []
