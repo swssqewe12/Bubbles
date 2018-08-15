@@ -18,4 +18,5 @@ images = {
 	"head": load_image("res/img/characters/normal/green/head.png", anchor_mode=ANCHOR_MODE_CENTER),
 	"tail": load_image("res/img/characters/normal/green/tail.png", anchor_mode=ANCHOR_MODE_CENTER),
 	"boost_particle": load_image("res/img/boost_particle.png", anchor_mode=ANCHOR_MODE_CENTER),
+	"offscreen_bubble": load_image("res/img/offscreen_bubble.png", anchor_mode=ANCHOR_MODE_CENTER)
 }

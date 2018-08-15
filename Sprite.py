@@ -10,14 +10,15 @@ class Sprite():
 		self.transform = transform or Transform()
 		self.is_relative = is_relative
 		self.opacity = 1
+		self._visibility = 1
 
 	def set_image(self, image_name):
 		self.todo.append({"name": "set_image", "image": res.images[image_name]})
 		#self._spr.image = res.images[image_name]
 	
-	def set_visible(self, value):
-		self.todo.append({"name": "set_visible", "value": value})
-		#self._spr.visible = boolean
+	def change_visibility(self, value):
+		self._visibility += value
+		self.todo.append({"name": "set_visible", "value": self._visibility > 0})
 
 	def get_absolute_pos(self, relative_pos=None):
 		ret = self.transform.pos

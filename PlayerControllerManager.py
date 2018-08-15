@@ -1,8 +1,9 @@
-import esp, controller_profiles, pyglet
+import esp, controller_profiles, pyglet, functools, mathutils
 from PygletICCBinder import *
 from PlayerICCUnit import *
 from Vector import *
 from Sprite import *
+from BubbleSprite import *
 
 # Components
 from PlayerTag import *
@@ -14,6 +15,7 @@ from BoostControl import *
 from DodgeControl import *
 from Trail import *
 from Particles import *
+from Bubble import *
 
 class PlayerControllerManager(esp.Processor):
 
@@ -37,14 +39,29 @@ class PlayerControllerManager(esp.Processor):
 				icc, ic_x, ic_y, ic_dash = controller_profiles.build_player_controller_icc(player.controller_profile)
 				player.pyglet_controller.push_handlers(PygletICCBinder(icc))
 				player.controller_icc = icc
+				self.create_player_entity(ic_x, ic_y, ic_dash)
 
-				rend = Renderable()
-				head = rend.add_sprite(Sprite("head"))
-				rend.camera = self.camera
-				mcontrol = MovementControl()
-				mcontrol.add_control(ic_x, Vector(1, 0))
-				mcontrol.add_control(ic_y, Vector(0, 1))
-				bcontrol = BoostControl(ic_dash)
-				dodge = DodgeControl(ic_dash)
-				dodge.sprite_handles.append(head)
-				entity = self.world.create_entity(PlayerTag(), Transform(), Motion(), Trail(), Particles(), rend, mcontrol, bcontrol, dodge)
+	def create_player_entity(self, ic_x, ic_y, ic_dash):
+		rend = Renderable()
+		head_spr = Sprite("head")
+		head = rend.add_sprite(head_spr)
+		rend.camera = self.camera
+		mcontrol = MovementControl()
+		mcontrol.add_control(ic_x, Vector(1, 0))
+		mcontrol.add_control(ic_y, Vector(0, 1))
+		bcontrol = BoostControl(ic_dash)
+		dodge = DodgeControl(ic_dash)
+		dodge.sprite_handles.append(head)
+		bubble = Bubble()
+		bubble.camera = self.camera
+		head_sbo = 64 + 63
+		bubble.add_bubble_sprite(BubbleSprite("head", 2, sbo=head_sbo,
+			scale_func	 = lambda x,y: head_spr.transform.scale,
+			opacity_func = lambda x,y: head_spr.opacity))
+		bubble.add_bubble_sprite(BubbleSprite("offscreen_bubble", 1, sbo=112.5,
+			scale_func	 = lambda x,y: head_spr.transform.scale,
+			opacity_func = lambda x,y: 0.8,
+			rot_func	 = lambda bub_spr,_: mathutils.DEG_180-Vector(bub_spr.offscreen_x, bub_spr.offscreen_y).to_rot()+mathutils.DEG_90))
+		bubble.roo = -head_sbo
+		bubble.sprites_to_set_invisible.append(head_spr)
+		entity = self.world.create_entity(PlayerTag(), Transform(), Motion(), Trail(), Particles(), rend, mcontrol, bcontrol, dodge, bubble)

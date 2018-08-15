@@ -10,6 +10,7 @@ from PhysicsSystem import *
 from GameCameraMovementSystem import *
 from CameraLerpSystem import *
 from TrailGenerator import *
+from BubbleGenerator import *
 from RenderSystem import *
 
 # Temporary imports
@@ -45,6 +46,8 @@ class Game(pyglet.window.Window):
 		self.world.add_processor(DodgeInputSystem(),
 			groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(TrailGenerator(),
+			groups=[self.pgs["UPDATE"]])
+		self.world.add_processor(BubbleGenerator(),
 			groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(GameCameraMovementSystem(self.game_camera),
 			groups=[self.pgs["UPDATE"]])
