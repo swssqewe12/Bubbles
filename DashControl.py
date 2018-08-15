@@ -10,4 +10,5 @@ class DashControl:
 		self.range = 54
 		self.fixed_force = 20 * 60
 		self.variable_force = 10
-		self.current_collider = None
+		self.damage = 0
+		self.current_hitbox = None

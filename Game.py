@@ -13,7 +13,7 @@ from CameraLerpSystem import *
 from TrailGenerator import *
 from BubbleGenerator import *
 from RenderSystem import *
-from CollisionDetector import *
+from AttackSystem import *
 
 # Temporary imports
 from Camera import *
@@ -53,7 +53,7 @@ class Game(pyglet.window.Window):
 			groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(BubbleGenerator(),
 			groups=[self.pgs["UPDATE"]])
-		self.world.add_processor(CollisionDetector(),
+		self.world.add_processor(AttackSystem(),
 			groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(GameCameraMovementSystem(self.game_camera),
 			groups=[self.pgs["UPDATE"]])
