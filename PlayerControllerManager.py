@@ -41,20 +41,21 @@ class PlayerControllerManager(esp.Processor):
 	def update(self, dt):
 		for player in self.player_list:
 			if player.connect_ic.get_amt() > 0 and not player.controller_icc:
-				icc, ic_x, ic_y, ic_dash = controller_profiles.build_player_controller_icc(player.controller_profile)
+				icc, ic_x, ic_y, ic_sprint, ic_dash = controller_profiles.build_player_controller_icc(player.controller_profile)
 				player.pyglet_controller.push_handlers(PygletICCBinder(icc))
 				player.controller_icc = icc
-				self.create_player_entity(ic_x, ic_y, ic_dash)
+				self.create_player_entity(ic_x, ic_y, ic_sprint, ic_dash)
 
-	def create_player_entity(self, ic_x, ic_y, ic_dash):
+	def create_player_entity(self, ic_x, ic_y, ic_sprint, ic_dash):
 		transform = Transform()
 		rend = Renderable()
 		head_spr = Sprite("head")
 		head = rend.add_sprite(head_spr)
 		rend.camera = self.camera
 		mcontrol = MovementControl()
-		mcontrol.add_control(ic_x, Vector(1, 0))
-		mcontrol.add_control(ic_y, Vector(0, 1))
+		mcontrol.add_dir_control(ic_x, Vector(1, 0))
+		mcontrol.add_dir_control(ic_y, Vector(0, 1))
+		mcontrol.ic_sprint = ic_sprint
 		bcontrol = BoostControl(ic_dash)
 		#dodge = DodgeControl(ic_dash)
 		#dodge.sprite_handles.append(head)
@@ -77,5 +78,5 @@ class PlayerControllerManager(esp.Processor):
 		col = Collidable([
 			CircleCollider(Vector(0, 0), 64, rel_pos=lambda pos: transform.pos.added_to(pos))
 		])
-		col.bounce = 0.2
+		col.bounce = 0.1
 		entity = self.world.create_entity(PlayerTag(), transform, Motion(), Trail(), Particles(), rend, mcontrol, bcontrol, bubble, dash, attack_boxes, col)
