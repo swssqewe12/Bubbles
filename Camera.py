@@ -10,6 +10,8 @@ class Camera:
 		self.min_zoom = 0
 		self.max_zoom = math.inf
 		self.lerp_speed = 0
+		self.target_pos = self.pos
+		self.target_zoom = self.zoom
 
 	def set_size(self, size):
 		self._size = size

@@ -8,18 +8,19 @@ from CircleCollider import *
 from Hurtbox import *
 
 # Components
-from PlayerTag import *
-from Transform import *
-from Motion import *
-from Renderable import *
-from MovementControl import *
-from BoostControl import *
-from DodgeControl import *
-from DashControl import *
 from AttackBoxes import *
-from Trail import *
-from Particles import *
+from BoostControl import *
 from Bubble import *
+from Collidable import *
+from DashControl import *
+from DodgeControl import *
+from Motion import *
+from MovementControl import *
+from Particles import *
+from PlayerTag import *
+from Renderable import *
+from Trail import *
+from Transform import *
 
 class PlayerControllerManager(esp.Processor):
 
@@ -73,4 +74,6 @@ class PlayerControllerManager(esp.Processor):
 			rot_func	 = lambda bub_spr,_: mathutils.DEG_180-Vector(bub_spr.offscreen_x, bub_spr.offscreen_y).to_rot()+mathutils.DEG_90))
 		bubble.roo = 64
 		bubble.sprites_to_set_invisible.append(head_spr)
-		entity = self.world.create_entity(PlayerTag(), transform, Motion(), Trail(), Particles(), rend, mcontrol, bcontrol, bubble, dash, attack_boxes)
+		entity = self.world.create_entity(PlayerTag(), transform, Motion(), Trail(), Particles(), rend, mcontrol, bcontrol, bubble, dash, attack_boxes, Collidable([
+			CircleCollider(Vector(0, 0), 64, rel_pos=lambda pos: transform.pos.added_to(pos))
+		]))

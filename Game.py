@@ -60,7 +60,7 @@ class Game(pyglet.window.Window):
 		self.world.add_processor(CameraLerpSystem([self.game_camera]),
 			groups=[self.pgs["FIXED_UPDATE"]])
 		self.world.add_processor(PhysicsSystem(),
-			groups=[self.pgs["FIXED_UPDATE"]])
+			groups=[self.pgs["FIXED_UPDATE"], self.pgs["UPDATE"]])
 		self.world.add_processor(RenderSystem(),
 			groups=[self.pgs["UPDATE"], self.pgs["DRAW"]])
 
@@ -78,12 +78,13 @@ class Game(pyglet.window.Window):
 		self.world.process_group(self.pgs["DRAW"], method_name="draw")
 
 	def on_update(self, dt):
-		self.world.process_group(self.pgs["UPDATE"], dt, method_name="update")
-		dt += self.fixed_update_additional_dt
-		while dt > 0:
+		fixed_dt = dt
+		fixed_dt += self.fixed_update_additional_dt
+		while fixed_dt > 0:
 			self.world.process_group(self.pgs["FIXED_UPDATE"], 0.001, method_name="fixed_update")
-			dt -= 0.001
-		self.fixed_update_additional_dt = dt
+			fixed_dt -= 0.001
+		self.fixed_update_additional_dt = fixed_dt
+		self.world.process_group(self.pgs["UPDATE"], dt, method_name="update")
 
 	def on_key_press(self, symbol, modifiers):
 		if symbol == key.ESCAPE:

@@ -25,7 +25,7 @@ class AttackSystem(esp.Processor):
 				for ent_b, attack_boxes_b in self.world.get_component(AttackBoxes):
 					if ent_a == ent_b or hitbox.hit_entities.get(ent_b, False): continue
 					for hurtbox in attack_boxes_b.hurtboxes:
-						if getattr(hitbox.collider, "check_" + hurtbox.collider.__class__.__name__, lambda *args,**kwargs:False)(hurtbox.collider):
+						if hitbox.collider.check(hurtbox.collider):
 							motion = self.world.get_entity_component(ent_b, Motion)
 							motion.velocity.add(hitbox.attack_dir(ent_b).with_length(hitbox.fixed_force))
 							hitbox.hit_entities[ent_b] = True
