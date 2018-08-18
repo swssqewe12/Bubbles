@@ -20,14 +20,13 @@ class MovementInputSystem(esp.Processor):
 			if control.ic_sprint.get_amt() == 0:
 				accel_speed = control.accel_speed
 				max_speed	= control.max_speed
-				control.curr_accel_scalar = min(control.curr_accel_scalar + control.accel_change_speed * dt, 1)
+				control.curr_max_speed_scalar = min(control.curr_max_speed_scalar + control.max_speed_scalar_change_speed * dt, 1)
 				if transform: transform.scale = control.initial_scale
 			else:
-				print("gywit hwarsht")
 				accel_speed = control.sprint_accel_speed
 				max_speed	= control.sprint_max_speed
-				control.curr_accel_scalar = max(control.curr_accel_scalar - control.accel_change_speed * dt, control.min_accel_scalar)
-				if transform: transform.scale = control.sprint_scale
+				control.curr_max_speed_scalar = max(control.curr_max_speed_scalar - control.max_speed_scalar_change_speed * dt, control.min_max_speed_scalar)
+				if transform: transform.scale = control.sprint_scale / mathutils.map_range(control.curr_max_speed_scalar, control.min_max_speed_scalar, 1, control.min_scale_divider, 1)
 			
-			motion.acceleration = accel.set_max_length(1).mul_scalar(accel_speed * control.curr_accel_scalar)
-			motion.velocity.set_max_length(max_speed)
+			motion.acceleration = accel.set_max_length(1).mul_scalar(accel_speed)
+			motion.velocity.set_max_length(max_speed * control.curr_max_speed_scalar)
