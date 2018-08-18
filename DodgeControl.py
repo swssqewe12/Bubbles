@@ -8,4 +8,4 @@ class DodgeControl:
 		self.recovery_time_left = 0
 		self.can_spot_dodge = True
 		self.can_forward_dodge = True
-		
+		self.disabled = 0

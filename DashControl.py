@@ -12,3 +12,4 @@ class DashControl:
 		self.variable_force = 10
 		self.damage = 0
 		self.current_hitbox = None
+		self.disabled = 0

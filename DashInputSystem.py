@@ -17,7 +17,7 @@ class DashInputSystem(esp.Processor):
 		for ent, (transform, motion, movement, dash, attack_boxes) in self.world.get_components(Transform, Motion, MovementControl, DashControl, AttackBoxes):
 			boost = self.world.get_entity_component(ent, BoostControl)
 
-			if dash.ic.get_amt() > 0 and dash.recovery_time_left == 0:
+			if dash.ic.get_amt() > 0 and dash.recovery_time_left == 0 and dash.disabled == 0:
 				if movement.is_moving and (motion.velocity.x != 0 or motion.velocity.y != 0) and (not boost or boost.recovery_time_left > 0):
 					dash.dash_time_left = dash.dash_time
 					dash.recovery_time_left = dash.recovery_time

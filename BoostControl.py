@@ -17,3 +17,4 @@ class BoostControl:
 		self.particle_time_left = 0
 		self.next_particle_interval = 0
 		self.back_boost_rot_diff = math.radians(120)
+		self.disabled = 0

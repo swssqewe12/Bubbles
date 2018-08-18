@@ -2,18 +2,19 @@ import pyglet, esp, constants
 from pyglet.window import key
 
 # Systems
-from PlayerControllerManager import *
-from MovementInputSystem import *
-from BoostInputSystem import *
-from DodgeInputSystem import *
-from DashInputSystem import *
-from PhysicsSystem import *
-from GameCameraMovementSystem import *
-from CameraLerpSystem import *
-from TrailGenerator import *
-from BubbleGenerator import *
-from RenderSystem import *
 from AttackSystem import *
+from BoostInputSystem import *
+from BubbleGenerator import *
+from CameraLerpSystem import *
+from DashInputSystem import *
+from DodgeInputSystem import *
+from GameCameraMovementSystem import *
+from MovementInputSystem import *
+from PhysicsSystem import *
+from PlayerControllerManager import *
+from RenderSystem import *
+from StunSystem import *
+from TrailGenerator import *
 
 # Temporary imports
 from Camera import *
@@ -54,6 +55,8 @@ class Game(pyglet.window.Window):
 		self.world.add_processor(BubbleGenerator(),
 			groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(AttackSystem(),
+			groups=[self.pgs["UPDATE"]])
+		self.world.add_processor(StunSystem(),
 			groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(GameCameraMovementSystem(self.game_camera),
 			groups=[self.pgs["UPDATE"]])
