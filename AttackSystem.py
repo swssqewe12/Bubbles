@@ -15,10 +15,12 @@ class AttackSystem(esp.Processor):
 					if ent_a == ent_b or hitbox.hit_entities.get(ent_b, False): continue
 					for hurtbox in attack_boxes_b.hurtboxes:
 						if hitbox.collider.check(hurtbox.collider):
+							attack_dir = hitbox.attack_dir(ent_b).normalized()
 							motion = self.world.get_entity_component(ent_b, Motion)
-							motion.velocity.add(hitbox.attack_dir(ent_b).with_length(hitbox.fixed_force))
+							motion.velocity.add(attack_dir.multed_by_scalar(hitbox.fixed_force))
 							hitbox.hit_entities[ent_b] = True
 							if hitbox.stun_time > 0:
 								stunnable = self.world.get_entity_component(ent_b, Stunnable)
 								if stunnable:
 									stunnable.stun(hitbox.stun_time - dt)
+							if hitbox.onhit: hitbox.onhit(ent_b, attack_dir)

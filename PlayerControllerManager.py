@@ -66,10 +66,10 @@ class PlayerControllerManager(esp.Processor):
 		bubble = Bubble()
 		bubble.camera = self.camera
 		bubble.add_bubble_sprite(BubbleSprite("head", 2, sbo=64 + 63,
-			scale_func	 = lambda x,y: head_spr.transform.scale,
-			opacity_func = lambda x,y: head_spr.opacity))
+			scale_func	 = lambda x,y: spr_head.transform.scale,
+			opacity_func = lambda x,y: spr_head.opacity))
 		bubble.add_bubble_sprite(BubbleSprite("offscreen_bubble", 1, sbo=112.5,
-			scale_func	 = lambda x,y: head_spr.transform.scale,
+			scale_func	 = lambda x,y: spr_head.transform.scale,
 			opacity_func = lambda x,y: 0.8,
 			rot_func	 = lambda bub_spr,_: mathutils.DEG_180-Vector(bub_spr.offscreen_x, bub_spr.offscreen_y).to_rot()+mathutils.DEG_90))
 		bubble.roo = 64

@@ -11,5 +11,8 @@ class DashControl:
 		self.fixed_force = 20 * 60
 		self.variable_force = 10
 		self.damage = 0
+		self.particle_lifetime = 0.5
+		self.particle_speed = 1.5
+		self.particle_offset = 50
 		self.current_hitbox = None
 		self.disabled = 0

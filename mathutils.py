@@ -3,10 +3,14 @@ HALF_PI	= math.pi / 2
 PI = math.pi
 TWO_PI = math.pi * 2
 
+DEG_15	= HALF_PI / 6
+DEG_45	= HALF_PI / 2
 DEG_90	= HALF_PI
 DEG_135	= 3 * math.pi / 4
 DEG_180	= PI
 
+DEG_NEG_15	= -DEG_15
+DEG_NEG_45	= -DEG_45
 DEG_NEG_90	= -DEG_90
 DEG_NEG_135	= -DEG_135
 DEG_NEG_180	= -DEG_180
