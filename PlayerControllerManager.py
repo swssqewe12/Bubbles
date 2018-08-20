@@ -12,6 +12,7 @@ from AttackBoxes import *
 from BoostControl import *
 from Bubble import *
 from Collidable import *
+from Damage import *
 from DashControl import *
 from DodgeControl import *
 from Motion import *
@@ -19,6 +20,7 @@ from MovementControl import *
 from Particles import *
 from PlayerTag import *
 from Renderable import *
+from Stunnable import *
 from Trail import *
 from Transform import *
 
@@ -81,4 +83,4 @@ class PlayerControllerManager(esp.Processor):
 		collidable.bounce = 0.1
 
 		entity = self.world.create_entity(transform, rend, mcontrol, bcontrol, dcontrol, bubble, attack_boxes, collidable,
-			PlayerTag(), Motion(), Trail(), Particles())
+			PlayerTag(), Motion(), Trail(), Particles(), Damage(), Stunnable())

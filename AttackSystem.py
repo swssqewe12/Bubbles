@@ -2,6 +2,7 @@ import esp, functools
 
 # Components
 from AttackBoxes import *
+from Damage import *
 from Motion import *
 from MovementControl import *
 from Stunnable import *
@@ -17,7 +18,9 @@ class AttackSystem(esp.Processor):
 						if hitbox.collider.check(hurtbox.collider):
 							attack_dir = hitbox.attack_dir(ent_b).normalized()
 							motion = self.world.get_entity_component(ent_b, Motion)
-							motion.velocity.add(attack_dir.multed_by_scalar(hitbox.fixed_force))
+							damage = self.world.get_entity_component(ent_b, Damage)
+							damage.amt += hitbox.damage
+							motion.velocity.add(attack_dir.multed_by_scalar(damage.get_force(hitbox.fixed_force, hitbox.variable_force)))
 							hitbox.hit_entities[ent_b] = True
 							if hitbox.stun_time > 0:
 								stunnable = self.world.get_entity_component(ent_b, Stunnable)
