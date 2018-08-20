@@ -12,6 +12,7 @@ from GameCameraMovementSystem import *
 from MovementInputSystem import *
 from PhysicsSystem import *
 from PlayerControllerManager import *
+from PlayerDeathSystem import *
 from RenderSystem import *
 from StunSystem import *
 from TrailGenerator import *
@@ -59,6 +60,8 @@ class Game(pyglet.window.Window):
 		self.world.add_processor(StunSystem(),
 			groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(GameCameraMovementSystem(self.game_camera),
+			groups=[self.pgs["UPDATE"]])
+		self.world.add_processor(PlayerDeathSystem(self.game_camera, self.game_camera.get_size_from_zoom(0.38)),
 			groups=[self.pgs["UPDATE"]])
 		self.world.add_processor(CameraLerpSystem([self.game_camera]),
 			groups=[self.pgs["FIXED_UPDATE"]])

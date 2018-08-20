@@ -55,7 +55,7 @@ class Vector:
 		raise NotImplementedError
 		
 	def dived_by_scalar(self, scalar):
-		raise NotImplementedError
+		return Vector(self.x / scalar, self.y / scalar)
 
 	# LENGTH
 

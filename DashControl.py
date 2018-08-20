@@ -10,7 +10,7 @@ class DashControl:
 		self.range = 54
 		self.fixed_force = 20 * 60
 		self.variable_force = 40 * 60
-		self.damage = 0
+		self.damage = 25 #TEMP
 		self.particle_lifetime = 0.5
 		self.particle_speed = 1.5
 		self.particle_offset = 50

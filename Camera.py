@@ -40,6 +40,10 @@ class Camera:
 	def get_zoom_from_size(self, size):
 		return min(math.inf if size.x == 0 else self._vsize.x / size.x, math.inf if size.y == 0 else self._vsize.y / size.y)
 
+	def get_size_from_zoom(self, zoom=None):
+		zoom = zoom or self.zoom
+		return Vector(self._vsize.x / zoom, self._vsize.y / zoom)
+
 	def get_visible_size(self):
 		if self._fits == "x":
 			a = self._vsize.x / self._size.x
