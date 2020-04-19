@@ -168,6 +168,9 @@ class World:
 	
     def get_entity_component(self, entity, component_type, default=None):
         return self._entities[entity].get(component_type, default)
+	
+    def get_all_entity_components(self, entity):
+        return self._entities[entity]
 
     def has_component(self, entity, component_type):
         """Check if a specific Entity has a Component of a certain type.

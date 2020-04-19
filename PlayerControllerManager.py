@@ -1,11 +1,7 @@
 import esp, controller_profiles, pyglet, functools, mathutils
 from PygletICCBinder import *
 from PlayerICCUnit import *
-from Vector import *
-from Sprite import *
-from BubbleSprite import *
-from CircleCollider import *
-from Hurtbox import *
+from EntityFactory import *
 
 # Components
 from AttackBoxes import *
@@ -46,41 +42,4 @@ class PlayerControllerManager(esp.Processor):
 				icc, ic_x, ic_y, ic_sprint, ic_dash = controller_profiles.build_player_controller_icc(player.controller_profile)
 				player.pyglet_controller.push_handlers(PygletICCBinder(icc))
 				player.controller_icc = icc
-				self.create_player_entity(ic_x, ic_y, ic_sprint, ic_dash)
-
-	def create_player_entity(self, ic_x, ic_y, ic_sprint, ic_dash):
-		spr_head = Sprite("head")
-
-		# Components
-		transform = Transform()
-		bcontrol = BoostControl(ic_dash)
-		dcontrol = DashControl(ic_dash)
-
-		rend = Renderable()
-		head = rend.add_sprite(spr_head)
-		rend.camera = self.camera
-
-		mcontrol = MovementControl()
-		mcontrol.add_dir_control(ic_x, Vector(1, 0))
-		mcontrol.add_dir_control(ic_y, Vector(0, 1))
-		mcontrol.ic_sprint = ic_sprint
-		
-		bubble = Bubble()
-		bubble.camera = self.camera
-		bubble.add_bubble_sprite(BubbleSprite("head", 2, sbo=64 + 63,
-			scale_func	 = lambda x,y: spr_head.transform.scale,
-			opacity_func = lambda x,y: spr_head.opacity))
-		bubble.add_bubble_sprite(BubbleSprite("offscreen_bubble", 1, sbo=112.5,
-			scale_func	 = lambda x,y: spr_head.transform.scale,
-			opacity_func = lambda x,y: 0.8,
-			rot_func	 = lambda bub_spr,_: mathutils.DEG_180-Vector(bub_spr.offscreen_x, bub_spr.offscreen_y).to_rot()+mathutils.DEG_90))
-		bubble.roo = 64
-
-		attack_boxes = AttackBoxes()
-		attack_boxes.hurtboxes.append(Hurtbox(CircleCollider(Vector(0, 0), 64, rel_pos=lambda pos: transform.pos.added_to(pos))))
-		
-		collidable = Collidable([CircleCollider(Vector(0, 0), 64, rel_pos=lambda pos: transform.pos.added_to(pos))])
-		collidable.bounce = 0.1
-
-		entity = self.world.create_entity(transform, rend, mcontrol, bcontrol, dcontrol, bubble, attack_boxes, collidable,
-			PlayerTag(), Motion(), Trail(), Particles(), Damage(), Stunnable())
+				EntityFactory.create_player(self.world, self.camera, ic_x, ic_y, ic_sprint, ic_dash)
